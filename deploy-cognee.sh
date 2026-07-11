@@ -145,9 +145,13 @@ else
 fi
 
 # ---- 7. 输出 OpenClaw 配置片段 ----
-# ---- 8. 自动配置 OpenClaw 插件 ----
-COGNEE_HOME_DIR=$(eval echo ~$COGNEE_USER)
-OPENCLAW_CONFIG="$COGNEE_HOME_DIR/.openclaw/openclaw.json"
+# ---- 8. 安装 OpenClaw 插件 + 自动配置 ----
+OPENCLAW_CONFIG=$(eval echo ~$COGNEE_USER/.openclaw/openclaw.json)
+if command -v npm &>/dev/null; then
+    log "安装 cognee-openclaw 插件..."
+    npm install -g @cognee/cognee-openclaw --quiet 2>/dev/null || warn "插件安装失败，请手动: npm install -g @cognee/cognee-openclaw"
+fi
+
 if [[ -f "$OPENCLAW_CONFIG" ]]; then
     log "检测到 OpenClaw 配置，自动合并插件..."
     python3 -c "
