@@ -18,6 +18,8 @@ set -euo pipefail
 #   COGNEE_USER          - 运行用户，默认 ubuntu
 #   COGNEE_SOURCE        - cognee 安装源，默认 pip 官方包
 #                          也可用 git: git+https://github.com/SLC413/cognee.git
+#   COGNEE_AUTO_RESTART  - 自动重启 Gateway，默认 true
+#                          设为 false 跳过
 # =========================================================
 
 COGNEE_LLM_PROVIDER="${COGNEE_LLM_PROVIDER:-deepseek}"
@@ -176,7 +178,7 @@ cfg['plugins'] = plugin_config
 with open('$OPENCLAW_CONFIG', 'w') as f:
     json.dump(cfg, f, indent=2)
 print('ok')
-" && log "OpenClaw 插件配置已合并" || warn "自动合并失败，请手动粘贴下方配置"
+" && log "OpenClaw 插件配置已合并" && log "重启 Gateway 激活记忆..." && openclaw gateway restart 2>/dev/null && log "Gateway 已重启，记忆系统已激活!" || warn "自动合并失败，请手动粘贴下方配置"
 else
     warn "未找到 $OPENCLAW_CONFIG，跳过自动配置"
 fi
@@ -191,7 +193,6 @@ echo "   日志:      sudo journalctl -u cognee -f"
 
 if [[ -f "$OPENCLAW_CONFIG" ]]; then
     echo "   插件配置:  已自动合并到 $OPENCLAW_CONFIG"
-    echo "   激活记忆:  openclaw gateway restart"
 else
     echo ""
     echo "   ⚠  未检测到 OpenClaw，手动配置如下:"
