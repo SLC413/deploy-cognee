@@ -16,6 +16,8 @@ set -euo pipefail
 #   COGNEE_EMBEDDING_MODEL    - embedding 模型，默认 BAAI/bge-small-en-v1.5
 #   COGNEE_PORT          - 端口，默认 8011
 #   COGNEE_USER          - 运行用户，默认 ubuntu
+#   COGNEE_SOURCE        - cognee 安装源，默认 pip 官方包
+#                          也可用 git: git+https://github.com/SLC413/cognee.git
 # =========================================================
 
 COGNEE_LLM_PROVIDER="${COGNEE_LLM_PROVIDER:-deepseek}"
@@ -23,6 +25,7 @@ COGNEE_LLM_MODEL="${COGNEE_LLM_MODEL:-deepseek/deepseek-chat}"
 COGNEE_EMBEDDING_PROVIDER="${COGNEE_EMBEDDING_PROVIDER:-fastembed}"
 COGNEE_EMBEDDING_MODEL="${COGNEE_EMBEDDING_MODEL:-BAAI/bge-small-en-v1.5}"
 COGNEE_PORT="${COGNEE_PORT:-8011}"
+COGNEE_SOURCE="${COGNEE_SOURCE:-cognee}"
 COGNEE_USER="${COGNEE_USER:-ubuntu}"
 COGNEE_HOME="/opt/cognee"
 COGNEE_ENV="$COGNEE_HOME/.env"
@@ -62,7 +65,7 @@ sudo chown -R "$COGNEE_USER:$COGNEE_USER" "$COGNEE_HOME"
 
 # ---- 3. 安装 cognee + fastembed ----
 log "安装 Cognee + FastEmbed（可能需要几分钟）..."
-"$COGNEE_VENV/bin/pip" install --quiet cognee fastembed
+"$COGNEE_VENV/bin/pip" install --quiet "$COGNEE_SOURCE" fastembed
 
 # ---- 4. 写 .env ----
 log "写入环境配置..."

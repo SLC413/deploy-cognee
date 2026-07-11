@@ -4,16 +4,27 @@
 
 ## 快速开始
 
+### 使用官方 pip 包（默认）
+
 ```bash
 export COGNEE_API_KEY=***
-curl -sSL https://raw.githubusercontent.com/SLC413/deploy-cognee/main/deploy-cognee.sh | bash
+curl -sSL https://raw.githubusercontent.com/SLC413/deploy-cognee/main/deploy-cognee.sh | sudo bash
 ```
 
-## 支持的环境变量
+### 使用自己的 fork（推荐）
+
+```bash
+export COGNEE_API_KEY=***
+export COGNEE_SOURCE="git+https://github.com/SLC413/cognee.git"
+curl -sSL https://raw.githubusercontent.com/SLC413/deploy-cognee/main/deploy-cognee.sh | sudo bash
+```
+
+## 环境变量
 
 | 变量 | 必填 | 默认值 |
 |------|------|--------|
 | `COGNEE_API_KEY` | ✅ | - |
+| `COGNEE_SOURCE` | - | `cognee`（pip 官方包） |
 | `COGNEE_LLM_PROVIDER` | - | `deepseek` |
 | `COGNEE_LLM_MODEL` | - | `deepseek/deepseek-chat` |
 | `COGNEE_EMBEDDING_PROVIDER` | - | `fastembed` |
@@ -26,6 +37,14 @@ curl -sSL https://raw.githubusercontent.com/SLC413/deploy-cognee/main/deploy-cog
 - OpenAI / OpenAI 兼容 API
 - Ollama（本地模型）
 - 任何 LiteLLM 支持的提供商
+
+## 使用自有 fork
+
+```bash
+export COGNEE_SOURCE="git+https://github.com/你的用户名/cognee.git"
+```
+
+这样就算上游删库，你的部署不受影响。
 
 ## 部署后
 
