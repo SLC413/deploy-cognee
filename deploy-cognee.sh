@@ -78,6 +78,7 @@ sudo chown -R "$COGNEE_USER:$COGNEE_USER" "$COGNEE_HOME"
 
 # ---- 3. 安装 cognee + fastembed ----
 log "安装 Cognee + FastEmbed（可能需要几分钟）..."
+export PIP_CACHE_DIR=/tmp/pip-cache
 "$COGNEE_VENV/bin/pip" install --quiet "$COGNEE_SOURCE" fastembed
 
 # ---- 4. 写 .env ----
@@ -127,7 +128,7 @@ sudo systemctl enable cognee --now
 
 # ---- 6. 等待健康检查 ----
 log "等待 Cognee 就绪..."
-for i in $(seq 1 30); do
+for i in $(seq 1 90); do
     if curl -sf "http://127.0.0.1:$COGNEE_PORT/health" 2>/dev/null | grep -q '"ready"'; then
         break
     fi
