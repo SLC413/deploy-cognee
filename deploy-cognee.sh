@@ -54,6 +54,17 @@ if ! command -v python3 &>/dev/null; then
     sudo apt-get update -qq && sudo apt-get install -y -qq python3 python3-pip python3-venv
 fi
 
+# 确保 venv 模块可用（Ubuntu 默认不装）
+if ! python3 -m venv --help &>/dev/null; then
+    warn "安装 python3-venv..."
+    sudo apt-get install -y -qq python3-venv
+fi
+
+# git 安装源码包时需要
+if ! command -v git &>/dev/null; then
+    sudo apt-get install -y -qq git
+fi
+
 PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 log "Python $PYTHON_VERSION"
 
