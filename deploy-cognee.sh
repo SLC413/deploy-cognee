@@ -223,4 +223,20 @@ else
 }
 PLUGINCONF
 fi
+
+# ---- 9. 验证激活状态 ----
+echo "━━━ 验证记忆系统 ━━━"
+HEALTH=$(curl -sf "http://127.0.0.1:$COGNEE_PORT/health" 2>/dev/null || echo '{"status":"down"}')
+if echo "$HEALTH" | grep -q '"ready"'; then
+    log "Cognee 服务: 健康 (端口 $COGNEE_PORT)"
+else
+    warn "Cognee 服务: 未就绪"
+fi
+
+LOG_FILE=$(ls -t /tmp/openclaw/openclaw-*.log 2>/dev/null | head -1)
+if [[ -n "$LOG_FILE" ]] && grep -q "cognee-openclaw" "$LOG_FILE" 2>/dev/null; then
+    log "插件状态: 已加载"
+else
+    warn "插件状态: 未检测到日志，重启 Gateway 后生效"
+fi
 echo ""
